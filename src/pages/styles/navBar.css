@@ -1,0 +1,21 @@
+.navBar{
+    display: grid;
+    grid-template-columns: 20% 20% 20% 20% 20% 20%;
+    height: fit-content;
+    background-color: #2196f3;
+    width: 100%;
+    margin-bottom: 50px;
+  }
+  
+  .logoNavBar{
+    text-align: left;
+    padding: 20px;
+    
+  }
+  
+  .textNavBar{
+    grid-column: 5;
+    text-align: right;
+    margin-right: 40px;
+  }
+  
