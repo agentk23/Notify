@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import "./styles/navBar.css";
 
 function NavBar({isLoggedIn, username}) {
@@ -15,19 +15,59 @@ function NavBar({isLoggedIn, username}) {
                 ?
                     <ul>
                         <li>
-                            <Link className='link' to="/dashboard">Notes</Link>
+                            <NavLink to="/dashboard">
+                                {({ isActive }) => (
+                                    <span
+                                        className={
+                                        isActive ? "activeNavBar" : "link"
+                                        }
+                                    >
+                                        Notes
+                                    </span>
+                                )}
+                            </NavLink>
                         </li>
                         <li>
-                            <Link className='link' to="/groups">Groups</Link>
+                            <NavLink to="/groups">
+                                {({ isActive }) => (
+                                    <span
+                                        className={
+                                        isActive ? "activeNavBar" : "link"
+                                        }
+                                    >
+                                        Groups
+                                    </span>
+                                )}
+                            </NavLink>
                         </li>
                         <li>
-                            <Link className='link' to="/createNote">Create a note</Link>
+                            <NavLink to="/createNote">
+                                {({ isActive }) => (
+                                    <span
+                                        className={
+                                        isActive ? "activeNavBar" : "link"
+                                        }
+                                    >
+                                        Create New Note
+                                    </span>
+                                )}
+                            </NavLink>
                         </li>
                     </ul>
 
                 : 
-                    <Link className='link textNavBar' to="/login">Sign in</Link>
-            }
+                    <NavLink to="/login">
+                    {({ isActive }) => (
+                        <span
+                            className={
+                            isActive ? "activeNavBar" : "link"
+                            }
+                        >
+                            Sign in
+                        </span>
+                    )}
+                    </NavLink>
+             }
         </nav>
     );
 }

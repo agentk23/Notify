@@ -16,7 +16,7 @@ function App() {
     <>
       <Router>
         <NavBar
-          isLoggedIn={false}
+          isLoggedIn={true}
         />
         <Routes>
             <Route element={<HomePage/>} path="/"/>
