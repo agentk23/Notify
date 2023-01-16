@@ -2,46 +2,39 @@ import React from 'react';
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import "./styles/loginPage.css"
-import { auth } from '../api/firebase/auth.js';
-import { signInWithEmailAndPassword } from 'firebase/auth';
-import { useAuth } from '../context/authContext';
+import GoogleLoginButton from './GoogleLoginButton';
+import { loginWithEmail, loginWithGoogle, postUser } from '../api/login';
 
 
 
 export default function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [status, setStatus] = useState('empty');
     const navigate = useNavigate();
-    const { user, setLogged } = useAuth();
+    const [error, setError] = useState(null);
 
     async function processLogin(e) {
         e.preventDefault();
+        setStatus('submitting');
 
-        (await signInWithEmailAndPassword(auth, email, password)
-            .then((userCredential) => {
-                //send token to backend
-                setLogged(true);
-                console.log(userCredential);
-                navigate("/dashboard");
-
-            })
-            .catch((error) => {
-                //switch statement to serve each error
-                //auth/invalid-email
-                //auth/missing-continue-uri
-                //auth/invalid-continue-uri
-                //auth/unauthorized-continue-uri
-                //auth/user-not-found
-                console.log(error);
-            }));
-
-
+        await loginWithEmail(email, password)
+        .then((res) => res)
+        .then((data) => {
+            postUser(data);
+            setStatus('success');
+            navigate(`/dashboard/${data.uid}`);
+        });
+        
     }
+            
+
+    
     return (
         <div className="form-wrapper">
             <form
                 className="form form-login"
-                onSubmit={e => processLogin(e)}>
+                >
 
                 <label htmlFor="user">Email</label>
                 <input
@@ -49,7 +42,7 @@ export default function Login() {
                     name="user"
                     id="user"
                     value={email}
-                    onChange={(e) => { setEmail(e.target.value) }}
+                    onChange={(e) => { setEmail(e.target.value)}}
                 />
 
                 <label htmlFor="pass">Password</label>
@@ -61,11 +54,15 @@ export default function Login() {
                     onChange={(e) => { setPassword(e.target.value) }}
                 />
                 <button
-                    className='btn loginBtn'
+                    className='authBtn loginBtn'
                     type="submit"
-                >Log in</button>
+                    onClick={processLogin}
+                    disabled={status === 'submitting' || email.length === 0 || password.length === 0} 
+                >Log In</button>
             </form>
+            <GoogleLoginButton/>
             <Link to="/register">Don't have an account? Sign up now!</Link>
         </div>
     )
 }
+

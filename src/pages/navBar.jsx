@@ -1,21 +1,36 @@
 import React, { useEffect } from 'react';
 import { useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, redirect, useNavigate } from 'react-router-dom';
 import "./styles/navBar.css";
 import { signOut } from 'firebase/auth';
 import { auth } from '../api/firebase/auth';
-import { useAuth } from '../context/authContext';
+import { AuthContext } from '../context/authContext';
+import { useContext } from 'react';
 
-function NavBar({ isLoggedIn, username }) {
-    const {setLogged, isLogged} = useAuth();
-    const [isShown, setIsShown] = useState('');
+function NavBar() {
+    const currentUser = useContext(AuthContext);
+    const [status, setStatus] = useState(false);
+    const navigateTo = useNavigate();
+
+    useEffect(() => {
+        if(currentUser) {
+            setStatus(true);
+        }
+        else{
+            setStatus(false)
+        }
+    }, [currentUser]);
+
     
 
     async function handleSignOut(e) {
-        signOut(auth)
+        await signOut(auth)
             .then(() => {
-                console.log("sign out succesful");
-                setLogged(false);
+                setStatus(false);
+                console.log(currentUser)
+                
+                navigateTo('/');
+                
             }).catch(error => {
                 console.log(error);
             });
@@ -27,12 +42,12 @@ function NavBar({ isLoggedIn, username }) {
                 className='logoNavBar'
                 src="../../logo.svg"
                 alt="Logo for Notify" />
-            {isLoggedIn
+            {status
                 ?
                 <div>
                     <ul>
                         <li>
-                            <NavLink to="/dashboard">
+                            <NavLink to={`/dashboard/${currentUser.uid}`}>
                                 {({ isActive }) => (
                                     <span
                                         className={
@@ -45,7 +60,7 @@ function NavBar({ isLoggedIn, username }) {
                             </NavLink>
                         </li>
                         <li>
-                            <NavLink to="/groups">
+                            <NavLink to={`/groups/${currentUser.uid}`}>
                                 {({ isActive }) => (
                                     <span
                                         className={
@@ -58,7 +73,7 @@ function NavBar({ isLoggedIn, username }) {
                             </NavLink>
                         </li>
                         <li>
-                            <NavLink to="/createNote">
+                            <NavLink to={`/createNote/${currentUser.uid}`}>
                                 {({ isActive }) => (
                                     <span
                                         className={
@@ -74,16 +89,8 @@ function NavBar({ isLoggedIn, username }) {
 
                     <button
                         className='btn usernameNavbarBtn'
-                        onClick={(e) => handleSignOut(e)}
-                    >{username}</button>
-                    {isShown &&
-                        <div className="pop-up-menu">
-                            <button
-                                className='btn signOutBtn'
-                                onClick={(e) => handleSignOut(e)}
-                            >Sign out</button>
-                        </div>
-                    }
+                        onClick={handleSignOut}
+                    >{currentUser.email}</button>
                 </div>
                 :
                 <NavLink to="/login">

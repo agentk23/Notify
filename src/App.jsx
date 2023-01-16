@@ -1,39 +1,40 @@
 import './App.css';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { useRef } from 'react';
+import { useContext, useState, useEffect } from 'react';
+import { AuthContext } from './context/authContext';
 import HomePage from './pages/homePage';
 import NavBar from './pages/navBar';
 import Dashboard from './pages/dashboard';
 import Login from './pages/loginPage';
-import PrivateRoutes from './utils/PrivateRoutes';
+import PrivateRoutes from './utils/PrivateRoute';
 import GroupsPage from './pages/groupsPage';
 import CreateNote from './pages/createNote';
 import RegisterPage from './pages/registerPage';
-import { useAuth } from './context/authContext';
+import { AuthProvider } from './context/authContext';
+import ErrorPage from './pages/errorPage';
 
 
 function App() {
-  const { isLogged, user } = useAuth();
+  
 
   return (
     <>
+    <AuthProvider>
       <Router>
-        <NavBar
-          isLoggedIn={isLogged}
-          username={user}
-        />
+        <NavBar/>
         <Routes>
           <Route element={<HomePage />} path="/" />
           <Route element={<PrivateRoutes />}>
-            <Route element={<Dashboard />} path="/dashboard" />
-            <Route element={<GroupsPage />} path="/groups" />
-            <Route element={<CreateNote />} path="/createNote" />
+            <Route element={<Dashboard />} path="/dashboard/:id" />
+            <Route element={<GroupsPage />} path="/groups/:id" />
+            <Route element={<CreateNote />} path="/createNote/:id" />
           </Route>
-
           <Route path='/login' element={<Login />} />
-          <Route path='/register' element={<RegisterPage />}></Route>
+          <Route path='/register' element={<RegisterPage />}/>
+          <Route path='/*' errorElement={<ErrorPage />} />
         </Routes>
       </Router>
+    </AuthProvider>
     </>
   );
 }

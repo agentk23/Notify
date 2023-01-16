@@ -1,17 +1,25 @@
 import { initializeApp } from "firebase/app";
-import { getAuth } from "firebase/auth";
+import { getAuth, GoogleAuthProvider } from "firebase/auth";
 
 
 
 const firebaseConfig = {
-    apiKey: "AIzaSyAPLWjzRle22RujgqPU2wJkxHE32vuG-Xo",
-    authDomain: "notify-371905.firebaseapp.com",
-    projectId: "notify-371905",
-    storageBucket: "notify-371905.appspot.com",
-    messagingSenderId: "804264511259",
-    appId: "1:804264511259:web:4af40dfcb8e2a2a14a35be",
-    measurementId: "G-SPMYS4YM1G"
+  apiKey: "AIzaSyBj8AGgCxJAOYnGpLNt93Ob25wKNc2aeWg",
+  authDomain: "notify-webapp-3f2fb.firebaseapp.com",
+  projectId: "notify-webapp-3f2fb",
+  storageBucket: "notify-webapp-3f2fb.appspot.com",
+  messagingSenderId: "236890447490",
+  appId: "1:236890447490:web:72f4924f4cb9380a531e9b",
+  measurementId: "G-GVEDH10PCT"
+
+
   };
   
 const app = initializeApp(firebaseConfig);
-export const auth = getAuth(app);
+const provider = new GoogleAuthProvider();
+provider.addScope('https://www.googleapis.com/auth/contacts.readonly');
+
+
+const auth = getAuth(app);
+
+export {provider, auth};
