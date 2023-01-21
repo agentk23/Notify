@@ -8,9 +8,11 @@ app.use(express.json());
 
 const usersRouter = require('./routes/userRouter');
 app.use('/api', usersRouter);
+const notesRouter = require('./routes/notesRouter');
+app.use('/notes', notesRouter);
 
 (async () => {
-  await db.sequelize.sync({force: true})
+  await db.sequelize.sync({force: false})
     .then(() => {
       console.log("Drop and re-sync db.");
     });
