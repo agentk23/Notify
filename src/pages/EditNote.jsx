@@ -1,53 +1,40 @@
 import React from 'react';
-import { useState, useContext } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 import NotePreview from './notePreview';
-import { useNavigate } from 'react-router-dom';
-import { AuthContext } from '../context/authContext';
-const contentInitialState = `
-![image](https://dodo.ac/np/images/0/01/Small_Silk_Hat_%28Black%29_NH_Icon.png)
-## Try CommonMark
 
-You can try CommonMark here.  This dingus is powered by
-[commonmark.js](https://github.com/commonmark/commonmark.js), the
-JavaScript reference implementation.
+export default function EditNote(props) {
 
-1. item one
-2. item two
-   - sublist
-   - sublist
-
-`;
-function CreateNote() {
-    const [title, setTitle] = useState('');
-    const [content, setContent] = useState(contentInitialState);
-    const currentUser = useContext(AuthContext);
+    const { state } = useLocation();
+    const [title, setTitle] = useState(state.note.title);
+    const [content, setContent] = useState(state.note.content);
     const navigate = useNavigate();
-    
-    
-    async function handleSave(e) {
+
+    async function handleEdit(e) {
         e.preventDefault();
-       
+        const note = {
+            noteID: state.note.noteID,
+            title: title,
+            content: content,
+        }
         await fetch('/notes', {
-            method: 'POST',
+            method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({
-                 title: title,
-                 content: content,
-                 uid: currentUser.uid,
-            }),
+            body: JSON.stringify(note),
         }).then(res => {
-            if(res.status === 201) {
-                alert('Note saved successfully');
+            if (res.status === 200) {
+                alert('Note edited successfully');
                 navigate('/dashboard');
             }
         }).catch(err => {
-            alert('Error saving note');
+            alert('Error editing note');
             console.log(err);
-        }
-        );
+        });
     }
+
+
 
     return (
         <>
@@ -77,17 +64,18 @@ function CreateNote() {
                 </div>
                 <div id='noteButtons'>
                     <button
-                        onClick={handleSave}
+                        onClick={handleEdit}
                         disabled={title === '' || content === ''}
                     >Save</button>
                 </div>
                 <div id='notePreview'>
-                    <NotePreview content={content}/>
-                        
+                    <NotePreview content={content} />
+
                 </div>
             </div>
         </>
     );
+
 }
 
-export default CreateNote;
+

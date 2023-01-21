@@ -25,7 +25,7 @@ export default function RegisterPage() {
                 newUser.uuid = userCredentials.user.uid;
                 newUser.photoURL = userCredentials.user.photoURL;
                 postUser(newUser);
-                navigate(`/dashboard/${userCredentials.user.uid}`);
+                navigate(`/dashboard`);
                 //navigate to dashboard
                 //give access to private routes -> GET data from DB
             }).catch((error) => {

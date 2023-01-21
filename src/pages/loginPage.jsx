@@ -23,7 +23,7 @@ export default function Login() {
         .then((data) => {
             postUser(data);
             setStatus('success');
-            navigate(`/dashboard/${data.uid}`);
+            navigate(`/dashboard`);
         });
         
     }

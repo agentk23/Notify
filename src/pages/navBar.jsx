@@ -13,24 +13,24 @@ function NavBar() {
     const navigateTo = useNavigate();
 
     useEffect(() => {
-        if(currentUser) {
+        if (currentUser) {
             setStatus(true);
         }
-        else{
+        else {
             setStatus(false)
         }
     }, [currentUser]);
 
-    
+
 
     async function handleSignOut(e) {
         await signOut(auth)
             .then(() => {
                 setStatus(false);
                 console.log(currentUser)
-                
+
                 navigateTo('/');
-                
+
             }).catch(error => {
                 console.log(error);
             });
@@ -38,16 +38,16 @@ function NavBar() {
 
     return (
         <nav className='navBar'>
-            <img
-                className='logoNavBar'
-                src="../../logo.svg"
-                alt="Logo for Notify" />
-            {status
-                ?
-                <div>
-                    <ul>
-                        <li>
-                            <NavLink to={`/dashboard/${currentUser.uid}`}>
+            <div className='navBarContainer'>
+                <img
+                    className='logoNavBar'
+                    src="../../logo.svg"
+                    alt="Notify" />
+                {status
+                    ?
+                    <div className='navBarC'>
+                        <div className="links">
+                            <NavLink className="link" to="/dashboard">
                                 {({ isActive }) => (
                                     <span
                                         className={
@@ -58,9 +58,7 @@ function NavBar() {
                                     </span>
                                 )}
                             </NavLink>
-                        </li>
-                        <li>
-                            <NavLink to={`/groups/${currentUser.uid}`}>
+                            <NavLink className="link" to="/groups">
                                 {({ isActive }) => (
                                     <span
                                         className={
@@ -71,9 +69,7 @@ function NavBar() {
                                     </span>
                                 )}
                             </NavLink>
-                        </li>
-                        <li>
-                            <NavLink to={`/createNote/${currentUser.uid}`}>
+                            <NavLink className="link" to="/createNote">
                                 {({ isActive }) => (
                                     <span
                                         className={
@@ -84,28 +80,26 @@ function NavBar() {
                                     </span>
                                 )}
                             </NavLink>
-                        </li>
-                    </ul>
-
-                    <button
-                        className='btn usernameNavbarBtn'
-                        onClick={handleSignOut}
-                    >{currentUser.email}</button>
-                </div>
-                :
-                <NavLink to="/login">
-                    {({ isActive }) => (
-                        <span
-                            className={
-                                isActive ? "activeNavBar" : "link"
-                            }
-                        >
-                            Sign in
-                        </span>
-                    )}
-                </NavLink>
-            }
-
+                        </div>
+                        <button
+                            className='btn signOutNavbarBtn'
+                            onClick={handleSignOut}
+                        >Sign out</button>
+                    </div>
+                    :
+                    <NavLink to="/login">
+                        {({ isActive }) => (
+                            <span
+                                className={
+                                    isActive ? "activeNavBar" : "link"
+                                }
+                            >
+                                Sign in
+                            </span>
+                        )}
+                    </NavLink>
+                }
+            </div>
         </nav>
     );
 }

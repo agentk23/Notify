@@ -13,7 +13,7 @@ function GoogleLoginButton() {
             .then((res) => res)
             .then((data) => {
                 postUser(data);
-                navigate(`/dashboard/${data.uid}`);
+                navigate(`/dashboard`);
             })
             .catch((error) => {
                 alert(error);

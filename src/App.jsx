@@ -12,6 +12,7 @@ import CreateNote from './pages/createNote';
 import RegisterPage from './pages/registerPage';
 import { AuthProvider } from './context/authContext';
 import ErrorPage from './pages/errorPage';
+import EditNote from './pages/EditNote';
 
 
 function App() {
@@ -25,9 +26,10 @@ function App() {
         <Routes>
           <Route element={<HomePage />} path="/" />
           <Route element={<PrivateRoutes />}>
-            <Route element={<Dashboard />} path="/dashboard/:id" />
-            <Route element={<GroupsPage />} path="/groups/:id" />
-            <Route element={<CreateNote />} path="/createNote/:id" />
+            <Route element={<Dashboard />} path="/dashboard"/>
+            <Route element={<EditNote/>} path="dashboard/:id"  />
+            <Route element={<GroupsPage />} path="/groups" />
+            < Route element={<CreateNote />} path="/createNote" />
           </Route>
           <Route path='/login' element={<Login />} />
           <Route path='/register' element={<RegisterPage />}/>

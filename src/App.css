@@ -52,3 +52,70 @@
   cursor: pointer;
   margin: 0.5rem;
 }
+
+/* createNote page  */
+
+.container {  display: grid;
+  grid-template-columns: 0.5fr 0.5fr;
+  grid-template-rows: 0.6fr 0.4fr 2fr 0.1fr 0.3fr;
+  gap: 2px 5%;
+  height: 800px;
+  width: 80%;
+  grid-auto-flow: row;
+  justify-items: center;
+  align-items: center;
+  grid-template-areas:
+    "noteHeader noteHeader"
+    "noteTools noteTools"
+    "noteContent notePreview"
+    "noteContent notePreview"
+    "noteButtons noteButtons";
+}
+
+
+#noteHeader {
+  height: fit-content;
+  width: fit-content; 
+  grid-area: noteHeader; }
+
+#noteTools { grid-area: noteTools; }
+
+#noteContent { grid-area: noteContent; }
+
+#notePreview {
+  grid-area: notePreview; }
+
+#noteButtons { grid-area: noteButtons; }
+
+
+ /* Dashboard Note page */
+ .noteListItem{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid black;
+  margin: 5px;
+  padding: 5px;
+ }
+ .noteListModel{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  
+  padding: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
+  transition: all 0.3s ease-out;
+  cursor: pointer;
+  background-color: white;
+  color: black;
+  text-decoration: none;
+  font-size: 1.5rem;
+  font-weight: 500;
+  
+ }
+
+ 
